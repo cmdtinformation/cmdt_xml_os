@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified"
+	attributeFormDefault="unqualified" targetNamespace="http://www.cmdt.ch/xml/cmdt_xml_os/1.3"
+	version="1.3" xmlns:kml="http://www.opengis.net/kml/2.2"
+	xmlns:ho="http://www.cmdt.ch/xml/cmdt_xml_os/1.3" xmlns="http://www.cmdt.ch/xml/cmdt_xml_os/1.3"
+	xmlns:mets="http://www.loc.gov/METS/">
+	<xs:element name="Pos">
+		<xs:annotation/>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PosArt">
+					<xs:annotation>
+						<xs:documentation>Gruppe, Rubrik, Dossier, File</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="Id"/>
+				<xs:element ref="Descript"/>
+				<xs:element ref="Use"/>
+				<xs:element ref="EventPlan"/>
+				<xs:element ref="EventHistory"/>
+				<xs:element ref="Relation"/>
+			</xs:sequence>
+			<xs:attribute name="Level" type="xs:integer" use="required">
+				<xs:annotation>
+					<xs:documentation>Ebene in OS</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attribute name="Index" type="xs:integer" use="required">
+				<xs:annotation>
+					<xs:documentation>Sortierreihenfolge innerhalb Ordner</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+			<xs:attributeGroup ref="Log"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="OS">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Title">
+					<xs:annotation>
+						<xs:documentation>Registraturplan der Gmd. XY</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Version">
+					<xs:annotation>
+						<xs:documentation>Version des Registraturplan </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Date">
+					<xs:annotation>
+						<xs:documentation>Releasedatum</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Organisation">
+					<xs:annotation>
+						<xs:documentation>Herkunft Institution / Unternehmen, Informationsproduzent</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute name="AbsolutPath" type="xs:string" use="required">
+				<xs:annotation>
+					<xs:documentation>absoluter Pfad des OS Root Element inkl. Laufwerk</xs:documentation>
+				</xs:annotation>
+			</xs:attribute>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="CMDT_OS">
+		<xs:annotation>
+			<xs:documentation>Schema für OS und Bewertung. Schema beinhaltet Metadaten für den ganzen ILM (RM + LZA)</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="OS">
+					<xs:annotation>
+						<xs:documentation>Headerinformationen über das Ordnungssystem</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element ref="Pos" maxOccurs="unbounded">
+					<xs:annotation>
+						<xs:documentation>Ordnungsposition</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+			<xs:attribute fixed="1.3" name="Version" type="xs:string" use="required"/>
+			<xs:attribute fixed="11.04.12/cm" name="Datum" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Pid">
+		<xs:annotation>
+			<xs:documentation>persistente ID</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:attribute name="Pid" type="xs:string" use="required"/>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="CMDT_ADM">
+		<xs:annotation>
+			<xs:documentation>cmdt_xml_os mapping zu anderen standards
+(CMDT_ADM=AnDerer Metadaten standard?)</xs:documentation>
+		</xs:annotation>
+		<xs:attributeGroup ref="Mapping"/>
+		<xs:attribute name="Description" form="unqualified">
+			<xs:annotation>
+				<xs:documentation>beschreibung metadatum</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+		<xs:attributeGroup ref="I18N"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Mapping">
+		<xs:attributeGroup ref="Mapping-Moreq-Moreq2"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="I18N">
+		<xs:annotation>
+			<xs:documentation>translation der metadatenbezeichnung. kann unterschiedlich sein zu standardbezeichnung.</xs:documentation>
+		</xs:annotation>
+		<xs:attribute fixed="PID" name="de" form="unqualified"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Mapping-Moreq">
+		<xs:attributeGroup ref="Mapping-Moreq-Moreq2"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Mapping-Moreq-Moreq2">
+		<xs:attribute name="Nr_Name" form="unqualified">
+			<xs:annotation>
+				<xs:documentation>Moreq2 Metadata Number:Name </xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Isadg">
+		<xs:attributeGroup ref="Isadg2"/>
+	</xs:attributeGroup>
+	<xs:attributeGroup name="Isadg2"/>
+	<xs:element name="Id">
+		<xs:annotation>
+			<xs:documentation>Identifikation</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Pid"> </xs:element>
+				<xs:element name="PosTitleOriginal" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Filename (hinterlegt Facets für filename/dirname)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Descript">
+		<xs:annotation>
+			<xs:documentation>Beschreibung</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="PosNr" type="xs:string"/>
+				<xs:element name="PosTitle">
+					<xs:annotation>
+						<xs:documentation>Positionstitel</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string"/>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Description" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Position Beschreibung</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Content" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Content (isad(g)).</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Date">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="DateCreate" type="xs:date"/>
+							<xs:element name="DateClosing" type="xs:date" minOccurs="0"/>
+							<xs:element minOccurs="0" name="DateModify" type="xs:date"/>
+							<xs:element name="DateReceipt" type="xs:date" minOccurs="0"/>
+							<xs:element name="DateWorkCreate" type="xs:date" minOccurs="0"/>
+							<xs:element name="DateWorkClosing" type="xs:date" minOccurs="0"/>
+							<xs:element name="DateWorkPeriod" type="xs:date" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Creator" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Ersteller</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Owner" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Eigentümer der Daten</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Extent">
+					<xs:annotation>
+						<xs:documentation>Umfang</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="ExtentAmount" type="xs:decimal">
+								<xs:annotation>
+									<xs:documentation>UmfangMenge, extent(isad(g))</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="ExtentUnit" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>UmfangEinheit</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Lead">
+					<xs:annotation>
+						<xs:documentation>Federfuehrung ja / nein</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="ja"/>
+							<xs:enumeration value="nein"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="CreationSystem" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Erstellungssystem HW + SW bei der Erstellung</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CreationProcess" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>ErstellungsProzess, Prozessid, REF eGOV CH Bezugnahme</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Template" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Bezugnahme auf TemplateId. TemplateFile, TemplateStandort</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element default="Digital" name="Appearance">
+					<xs:annotation>
+						<xs:documentation>Erscheinungsform Original: Papier / Digital</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Digital"/>
+							<xs:enumeration value="Papier"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="GeoRef" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Geografische Referenz (zb. KML)</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Subject" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Betreff</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Keywords" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Schlagworte</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Use">
+		<xs:annotation>
+			<xs:documentation>Benutzung</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="FileTyp" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Vertrag, Notiz, Protokoll, Rechnung</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="MimeTyp" type="xs:string"/>
+				<xs:element name="FileFormat" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Dateiformat z.B. PUID / Droid</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Access">
+					<xs:annotation>
+						<xs:documentation>Zugangsrechte</xs:documentation>
+					</xs:annotation>
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="AccessRMS" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Zugriffsrechte aus RMS (Fileserver, ...)</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="Audience" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Zielgruppe</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="PersonalData">
+								<xs:annotation>
+									<xs:documentation>Datenschutz, Personendaten ja / nein</xs:documentation>
+								</xs:annotation>
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="ja"/>
+										<xs:enumeration value="nein"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element name="Classified" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Klassifizierung, Vertraulichkeitskategorie, Geheimhaltungsstufe, Rechtsstatus </xs:documentation>
+								</xs:annotation>
+							</xs:element>
+							<xs:element name="SafeguardPeriod" type="xs:string">
+								<xs:annotation>
+									<xs:documentation>Schutzfrist</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="Checksum" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Prüfsumme</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Language" type="xs:string"/>
+				<xs:element name="Location" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Standort physisches Objekt. s.a. Erscheinungsform</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Custom" type="xs:string" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Zur freien Verfügung</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Rights" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element default="nein" name="RightsMarked">
+								<xs:simpleType>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="ja"/>
+										<xs:enumeration value="nein"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+							<xs:element minOccurs="0" name="RightsStatement" type="xs:anyURI">
+								<xs:annotation>
+									<xs:documentation>URL auf Lizenzbedingungen</xs:documentation>
+								</xs:annotation>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="EventPlan">
+		<xs:annotation>
+			<xs:documentation>Bewertungsinformationen</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:choice>
+				<xs:element name="RetentionClass" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Bewertungsklasse</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:sequence>
+					<xs:element name="ProcessType" type="xs:string" minOccurs="0">
+						<xs:annotation>
+							<xs:documentation>ProzessTyp: Führungs-, Gestaltungs-, Unterstützungs-, Leistungserstellungsprozess</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="CaseBreak" type="xs:int" default="540">
+						<xs:annotation>
+							<xs:documentation>Geschäftsabbruch x Tage nach Geschäftseröffnung</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="RetentionPeriod" type="xs:string" default="10">
+						<xs:annotation>
+							<xs:documentation>Aufbewahrungsfrist: n=geschäftsrelevant, n Jahre nach Aufb.Start im RMS aufbewahren)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element default="En" name="RetentionStart">
+						<xs:annotation>
+							<xs:documentation>Zeitpunkt, ab welcher die RetentionPeriod (Aufbewahrungsfrist) anfängt zu laufen. (Be=ab Geschäftsbeginn, En=ab Geschäftsabschluss)</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="En"/>
+								<xs:enumeration value="Be"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="DisposalPeriod" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Aussonderungsfrist nach Geschäftsabschluss</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="ArchivalValue" default="aussondern">
+						<xs:annotation>
+							<xs:documentation>Archivwürdigkeit: v=vollständig, s=sample, a=aussondern(Vernichten)</xs:documentation>
+						</xs:annotation>
+						<xs:simpleType>
+							<xs:restriction base="xs:string">
+								<xs:enumeration value="vollständig"/>
+								<xs:enumeration value="sample"/>
+								<xs:enumeration value="aussondern"/>
+							</xs:restriction>
+						</xs:simpleType>
+					</xs:element>
+					<xs:element name="ArchivalPeriod" type="xs:string">
+						<xs:annotation>
+							<xs:documentation>Archivierungsfrist nach Aufbewahrungsfrist (d=dauerhaft, n=Jahre)</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+					<xs:element name="LegalBase" type="xs:string" default="RM-Policy V1.0">
+						<xs:annotation>
+							<xs:documentation>Gesetzliche Grundlage</xs:documentation>
+						</xs:annotation>
+					</xs:element>
+				</xs:sequence>
+			</xs:choice>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="EventHistory">
+		<xs:annotation>
+			<xs:documentation>log</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Event" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attributeGroup ref="Log"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Relation">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Reference" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>Verweis</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element minOccurs="0" name="Order2" type="xs:string">
+					<xs:annotation>
+						<xs:documentation>ZweiteOrdnung: Stichworte für weitere Ordnungsmöglichkeiten</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Struct">
+					<xs:complexType>
+						<xs:choice/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:attributeGroup name="Log">
+		<xs:attribute name="Date" type="xs:date" use="required"/>
+		<xs:attribute name="Text" type="xs:string" use="required"/>
+		<xs:attribute name="Agent" type="xs:string" use="required">
+			<xs:annotation>
+				<xs:documentation>Person, Organisation, Software</xs:documentation>
+			</xs:annotation>
+		</xs:attribute>
+	</xs:attributeGroup>
+</xs:schema>
